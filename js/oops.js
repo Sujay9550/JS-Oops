@@ -154,3 +154,53 @@ audi.brake(); // Result - Audi is going at a speed of 225
 bmw.brake(); // Result - BMW is going at a speed of 245
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// ES6 Classes
+
+// Class Declaration
+
+class PersonClass {
+  constructor(firstName, birthYear) {
+    this.firstName = firstName;
+    this.birthYear = birthYear;
+  }
+
+  // Adding a method - method will be added to the prototype property
+  calcAge() {
+    console.log(2022 - this.birthYear);
+  }
+
+  greet() {
+    console.log(`Hello, ${this.firstName}`);
+  }
+}
+
+const johnson = new PersonClass("Johnson", 1990);
+console.log(johnson); // Result - PersonClass {firstName: 'Johnson', birthYear: 1990}
+
+// Calling a calcAge Method
+johnson.calcAge(); // Result - 32
+
+console.log(PersonClass.prototype); // Result - {constructor: ƒ, calcAge: ƒ, greet: ƒ}
+console.log(johnson.__proto__); // Result - {constructor: ƒ, calcAge: ƒ, greet: ƒ}
+console.log(johnson.__proto__ === PersonClass.prototype); // Result - True
+console.log(PersonClass.prototype.isPrototypeOf(johnson)); // Result - True
+console.log(PersonClass.prototype.isPrototypeOf(PersonClass)); // Result - False
+
+// Adding a method manually to the prototype
+PersonClass.prototype.displayAge = function () {
+  console.log(
+    `Hey ${this.firstName}, you are ${2022 - this.birthYear} years old`
+  );
+};
+
+johnson.displayAge(); // Result - Hey Johnson, you are 32 years old
+console.log(johnson.__proto__); // Result - {displayAge: ƒ, constructor: ƒ, calcAge: ƒ, greet: ƒ}
+console.log(PersonClass.prototype); // Result - {displayAge: ƒ, constructor: ƒ, calcAge: ƒ, greet: ƒ}
+
+// Things to Remember about classes
+// 1. Classes are not hoisted
+// 2. classes are first-class citizens
+// 3. classes are executed in strict mode
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
