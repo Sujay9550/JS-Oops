@@ -204,3 +204,86 @@ console.log(PersonClass.prototype); // Result - {displayAge: ƒ, constructor: ƒ
 // 3. classes are executed in strict mode
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Setters and Getters in Object
+
+const account = {
+  owner: "Richard",
+  movements: [200, 500, 120, 300],
+
+  get latest() {
+    return this.movements.slice(-1).pop();
+  },
+
+  set latest(mov) {
+    return this.movements.push(mov);
+  },
+};
+
+// Accessing a Getter
+console.log(account.latest); // Result - 300
+
+// Setting a Setter in movements
+account.latest = 50;
+console.log(account.movements); // Results - [200, 500, 120, 300, 50]
+console.log(account.latest); // Result - 50
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Setters and Getters on Classes
+
+// PersonClass
+
+class PersonClassNew {
+  constructor(fullName, birthYear) {
+    this.fullName = fullName;
+    this.birthYear = birthYear;
+  }
+
+  calcAge() {
+    console.log(2022 - this.birthYear);
+  }
+
+  get age() {
+    return 2022 - this.birthYear;
+  }
+
+  set fullName(name) {
+    if (name.includes(" ")) this._fullName = name;
+    // create variable name with underscore
+    else alert(`${name} is not a full name!`);
+    console.log(name);
+  }
+
+  // Get method to get the fullname
+  get fullName() {
+    return this._fullName;
+  }
+}
+
+const martin = new PersonClassNew("Martin Garrix", 1993);
+console.log(martin); // Result - PersonClassNew {fullName: 'Martin Garrix', birthYear: 1993}
+martin.calcAge(); // Result - 29
+console.log(martin.age); // Result - 29
+console.log(martin.fullName); // Result - Martin Garrix
+
+martin.fullName = "Garrix Martin"; // Result - Garrix Martin
+console.log(martin.fullName); // Result - Garrix Martin
+
+const adam = new PersonClassNew("Adam", 1990);
+console.log(adam); // Result - PersonClassNew {birthYear: 1990}
+console.log(adam.fullName); // Result - Undefined (As fullname does not include " ", hence fullName is Undefined)
+
+adam.fullName = "Adam Gilchrist";
+console.log(adam.fullName); // Result - Adam Gilchrist
+console.log(adam); // Result- PersonClassNew {birthYear: 1990, _fullName: 'Adam Gilchrist'}
+
+const steve = new PersonClassNew("Steve Smith", 1992);
+console.log(steve); // Result - PersonClassNew {_fullName: 'Steve Smith', birthYear: 1992}
+console.log(steve.fullName); // Result - Steve Smith
+
+steve.fullName = "Smith Steve";
+console.log(steve); // Result - PersonClassNew {_fullName: 'Smith Steve', birthYear: 1992}
+console.log(steve.fullName); // Result - Smith Steve
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
