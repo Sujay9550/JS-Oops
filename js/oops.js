@@ -287,3 +287,72 @@ console.log(steve); // Result - PersonClassNew {_fullName: 'Smith Steve', birth
 console.log(steve.fullName); // Result - Smith Steve
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Example: 1 CarClass
+
+class CarClass {
+  constructor(make, model) {
+    this.make = make;
+    this.model = model;
+  }
+
+  set make(name) {
+    if (name.includes(" ")) this._make = name;
+    else {
+      console.log(name);
+    }
+  }
+
+  get make() {
+    return this._make;
+  }
+}
+
+const aston = new CarClass("Aston Martin", 2022);
+console.log(aston); // Result - CarClass {_make: 'Aston Martin', model: 2022}
+console.log(aston.make); // Result - Aston Martin
+console.log(aston.model); // Result - 2022
+
+aston.make = "Lamborghini Gallardo";
+console.log(aston); // Result - CarClass {_make: 'Lamborghini Gallardo', model: 2022}
+console.log(aston.make); // Result - Lamborghini Gallardo
+console.log(aston.model); // Result - 2022
+
+// Example: 2 Create a CarClassNew and create a get and set methods onto it.
+
+class CarClassNew {
+  constructor(make, speed) {
+    this.make = make;
+    this.speed = speed;
+  }
+
+  accelerate() {
+    this.speed += 10;
+    console.log(`${this.make} is going at a speed of ${this.speed}`);
+  }
+
+  brake() {
+    this.speed -= 5;
+    console.log(`${this.make} is going at a speed of ${this.speed}`);
+  }
+
+  set speedUS(speed) {
+    this.speed = speed * 1.6;
+  }
+
+  get speedUS() {
+    return this.speed / 1.6;
+  }
+}
+
+const ford = new CarClassNew("Ford", 240);
+console.log(ford); // Result - CarClassNew {make: 'Ford', speed: 240}
+console.log(ford.__proto__);
+console.log(ford.speedUS); // Result - 150
+ford.accelerate(); // Result - Ford is going at a speed of 250
+ford.accelerate(); // Result - Ford is going at a speed of 260
+ford.brake(); // Result - Ford is going at a speed of 255
+ford.speedUS = 50;
+console.log(ford);
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
