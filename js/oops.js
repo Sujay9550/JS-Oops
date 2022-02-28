@@ -356,3 +356,65 @@ ford.speedUS = 50;
 console.log(ford);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Static Methods - Constructor Function
+// Static methods are available on the constructor function only
+
+// Constructor Function - PersonStatic
+
+const PersonStatic = function (firstName, birthYear) {
+  this.firstName = firstName;
+  this.birthYear = birthYear;
+};
+
+const mark = new PersonStatic("Mark Johnson", 1992);
+console.log(mark); // Result - PersonStatic {firstName: 'Mark Johnson', birthYear: 1992}
+console.log(PersonStatic.prototype); // Result - {constructor: ƒ}
+console.log(mark.__proto__); // Result - {constructor: ƒ}
+
+PersonStatic.prototype.hey = function () {
+  console.log(`Hey ${this.firstName}`);
+};
+
+console.log(PersonStatic.prototype); // Result- {hey: ƒ, constructor: ƒ}
+console.log(mark.__proto__); // Result - {hey: ƒ, constructor: ƒ}
+mark.hey(); // Result - Hey Mark Johnson
+
+// Create a Static Method on the Constructor Function
+PersonStatic.hello = function () {
+  console.log("Hello, There");
+  console.log(this);
+};
+
+// Accessing the Static Method
+PersonStatic.hello();
+
+// Static Methods - Classes
+class PersonClassStatic {
+  constructor(firstName, birthYear) {
+    this.firstName = firstName;
+    this.birthYear = birthYear;
+  }
+
+  // Instance Methods
+  calcAge() {
+    console.log(2022 - this.birthYear);
+  }
+
+  // Static Method
+  static hey() {
+    console.log("Hey There");
+    console.log(this); // Here this is the class - PersonClassStatic
+  }
+}
+
+const jane = new PersonClassStatic("Jane Doe", 1990);
+console.log(jane); // Result - PersonClassStatic {firstName: 'Jane Doe', birthYear: 1990}
+console.log(jane.__proto__); // Result - {constructor: ƒ, calcAge: ƒ}
+console.log(PersonClassStatic.prototype); // Result - {constructor: ƒ, calcAge: ƒ}
+jane.calcAge(); // Result - 32
+
+// Accessing the Static Method
+PersonClassStatic.hey();
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
