@@ -418,3 +418,43 @@ jane.calcAge(); // Result - 32
 PersonClassStatic.hey();
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Object.Create
+
+// Creating a Prototype
+const PersonProto = {
+  calcAge() {
+    console.log(2022 - this.birthYear);
+  },
+
+  init(firstName, birthYear) {
+    this.firstName = firstName;
+    this.birthYear = birthYear;
+  },
+};
+
+// Creating a steven Object
+const steven = Object.create(PersonProto);
+console.log(steven); // Result - {} an empty object
+steven.job = "Developer";
+steven.country = "USA";
+steven.init("Steven Richards", 1990);
+
+console.log(steven); // Result - {job: 'Developer', country: 'USA', firstName: 'Steven Richards', birthYear: 1990}
+console.log(steven.__proto__); // Result - {calcAge: ƒ, init: ƒ} Here PersonProto is the prototype of steven object
+console.log(steven.__proto__ === PersonProto); // Result - True
+steve.calcAge(); // Result - 30
+
+// Creating a tony object
+const tony = Object.create(PersonProto);
+console.log(tony); // Result - {} an empty object
+tony.job = "Actor";
+tony.country = "USA";
+tony.init("Tony Stark", 1980);
+
+console.log(tony); // Result - {job: 'Actor', country: 'USA', firstName: 'Tony Stark', birthYear: 1980}
+console.log(tony.__proto__); // Result - {calcAge: ƒ, init: ƒ} Here PersonProto is the prototype of tony object
+console.log(tony.__proto__ === PersonProto); // Result - True
+tony.calcAge(); // Result - 42
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
