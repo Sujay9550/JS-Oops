@@ -458,3 +458,58 @@ console.log(tony.__proto__ === PersonProto); // Result - True
 tony.calcAge(); // Result - 42
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Inheritance - Using Constructor Function
+
+// Constructor Function for PersonOne
+
+const PersonOne = function (firstName, birthYear) {
+  this.firstName = firstName;
+  this.birthYear = birthYear;
+};
+
+// Adding a method to the prototype
+PersonOne.prototype.calcAge = function () {
+  console.log(2022 - this.birthYear);
+};
+
+console.log(PersonOne.prototype); // Result - {calcAge: ƒ, constructor: ƒ}
+
+// Constructor Function for StudentOne
+const StudentOne = function (firstName, birthYear, course) {
+  PersonOne.call(this, firstName, birthYear);
+  this.course = course;
+};
+
+console.log(StudentOne.prototype); // Result - {constructor: ƒ}
+
+// Creating a Connection/Link between StudentOne.prototype and PersonOne.prototype
+
+StudentOne.prototype = Object.create(PersonOne.prototype);
+console.log(StudentOne.prototype); // Result - PersonOne {}
+
+// Adding a method to the Prototype
+StudentOne.prototype.introduce = function () {
+  console.log(`My name is ${this.firstName} and I study ${this.course}`);
+};
+
+console.log(StudentOne.prototype); // Result - PersonOne {introduce: ƒ}
+
+// Creating a student object
+
+const joseph = new StudentOne("Joseph", 1990, "Computer Science");
+console.log(joseph); // Result - StudentOne {firstName: 'Joseph', birthYear: 1990, course: 'Computer Science'}
+joseph.calcAge(); // Result - 32
+joseph.introduce(); // Result - My name is Joseph and I study Computer Science
+console.log(joseph.__proto__); // Result - PersonOne {introduce: ƒ}
+console.log(StudentOne.prototype); // Result - PersonOne {introduce: ƒ}
+console.log(joseph.__proto__.__proto__); // Result - {calcAge: ƒ, constructor: ƒ}
+
+console.log(joseph instanceof StudentOne); // Result - True
+console.log(joseph instanceof PersonOne); // Result - True
+console.log(joseph instanceof Object); // Result - True
+
+StudentOne.prototype.constructor = StudentOne; // Setting the constructor as desired
+console.log(StudentOne.prototype);
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
