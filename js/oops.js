@@ -513,3 +513,99 @@ StudentOne.prototype.constructor = StudentOne; // Setting the constructor as des
 console.log(StudentOne.prototype);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Inheritance - Using ES6 Classes
+
+class PersonClassInherit {
+  constructor(firstName, birthYear) {
+    this.firstName = firstName;
+    this.birthYear = birthYear;
+  }
+
+  calcAge() {
+    console.log(2022 - this.birthYear);
+  }
+
+  greet() {
+    console.log(`Hello, ${this.firstName}`);
+  }
+}
+
+// Creating an instance of parent class
+
+class StudentClassInherit extends PersonClassInherit {
+  constructor(firstName, birthYear, course) {
+    super(firstName, birthYear);
+    this.course = course;
+  }
+
+  introduce() {
+    console.log(`Hello, I am ${this.firstName}, and i study ${this.course}`);
+  }
+
+  // Overriding the parent calcAge method
+  calcAge() {
+    console.log(
+      `Hey there!, I am ${this.firstName}, and i am ${
+        2022 - this.birthYear
+      } years old`
+    );
+  }
+}
+
+// Creating an object
+
+const michael = new StudentClassInherit("Michael", 1990, "Computer Science");
+console.log(michael); // Result - StudentClassInherit {firstName: 'Michael', birthYear: 1990, course: 'Computer Science'}
+console.log(michael.__proto__); // Result - PersonClassInherit {constructor: ƒ, introduce: ƒ, calcAge: ƒ}
+console.log(StudentClassInherit.prototype); // Result - PersonClassInherit {constructor: ƒ, introduce: ƒ, calcAge: ƒ}
+michael.calcAge(); // Result - Hey there!, I am Michael, and i am 32 years old.
+michael.greet(); // Result - Hello, Michael
+michael.introduce(); // Result- Hello, I am Michael, and i study Computer Science
+
+class NewPersonClassInherit {
+  constructor(firstName, birthYear) {
+    this.firstName = firstName;
+    this.birthYear = birthYear;
+  }
+
+  calcAge() {
+    console.log(2022 - this.birthYear);
+  }
+
+  greet() {
+    console.log(`Hey ${this.firstName}`);
+  }
+}
+
+console.log(NewPersonClassInherit.prototype); // Result - {constructor: ƒ, calcAge: ƒ, greet: ƒ}
+
+class NewStudentClassInherit extends NewPersonClassInherit {
+  constructor(firstName, birthYear, course) {
+    super(firstName, birthYear);
+    this.course = course;
+  }
+
+  introduce() {
+    console.log(
+      `Hello, I am ${this.firstName} and i am ${
+        2022 - this.birthYear
+      } years old`
+    );
+  }
+}
+
+console.log(NewStudentClassInherit.prototype); // Result - NewPersonClassInherit {constructor: ƒ, introduce: ƒ}
+
+const arun = new NewStudentClassInherit(
+  "Arun Dsouza",
+  1990,
+  "Mechanical Engineer"
+);
+
+console.log(arun); // Result - NewStudentClassInherit {firstName: 'Arun Dsouza', birthYear: 1990, course: 'Mechanical Engineer'}
+arun.calcAge(); // Result - 32
+arun.greet(); // Result - Hey Arun Dsouza
+arun.introduce(); // Result - Hello, I am Arun Dsouza and i am 32 years old
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
