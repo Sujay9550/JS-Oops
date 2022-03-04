@@ -609,3 +609,50 @@ arun.greet(); // Result - Hey Arun Dsouza
 arun.introduce(); // Result - Hello, I am Arun Dsouza and i am 32 years old
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Inheritance - Using Object.create
+
+const PersonProtoInherit = {
+  calcAge() {
+    console.log(2022 - this.birthYear);
+  },
+
+  init(firstName, birthYear) {
+    this.firstName = firstName;
+    this.birthYear = birthYear;
+  },
+};
+
+console.log(PersonProtoInherit); // Result - {calcAge: ƒ, init: ƒ}
+
+const StudentProtoInherit = Object.create(PersonProtoInherit); // PersonProtoInherit is the prototype of StudentProtoInherit
+console.log(StudentProtoInherit); // Result - {}
+
+// Adding Method to the StudentProtoInherit Prototype
+StudentProtoInherit.init = function (firstName, birthYear, course) {
+  PersonProtoInherit.init.call(this, firstName, birthYear);
+  this.course = course;
+};
+
+console.log(StudentProtoInherit); // Result - {init: ƒ}
+
+StudentProtoInherit.introduce = function () {
+  console.log(
+    `Hello, I am ${this.firstName}, and I am ${
+      2022 - this.birthYear
+    } years old and I study ${this.course}`
+  );
+};
+
+console.log(StudentProtoInherit); // Result - {init: ƒ, introduce: ƒ}
+
+// Creating Objects
+const jay = Object.create(StudentProtoInherit);
+console.log(jay); // Result - {}
+jay.init("Jay", 1990, "Information Science");
+console.log(jay); // Result - {firstName: 'Jay', birthYear: 1990, course: 'Information Science'}
+jay.calcAge(); // Result - 32
+jay.introduce(); // Result - Hello, I am Jay, and I am 32 years old and I study Information Science
+console.log(jay.__proto__); // Result - {init: ƒ, introduce: ƒ}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
