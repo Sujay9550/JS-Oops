@@ -656,3 +656,54 @@ jay.introduce(); // Result - Hello, I am Jay, and I am 32 years old and I study 
 console.log(jay.__proto__); // Result - {init: ƒ, introduce: ƒ}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Encapsulation - Protected Properties and Methods in Class
+
+class AccountEncaps {
+  constructor(owner, currency, pin) {
+    this.owner = owner;
+    this.currency = currency;
+    this._pin = pin; // Here _pin is known as protected
+    this._movements = []; // Here _movements is known as protected
+    this.locale = navigator.language;
+
+    console.log(`Thanks for opening an account, ${this.owner}`);
+  }
+
+  // Public Interfaces
+
+  getMovements() {
+    return this._movements;
+  }
+
+  deposit(val) {
+    this._movements.push(val);
+  }
+
+  withdraw(val) {
+    this.deposit(-val);
+  }
+
+  _approveLoan(val) {
+    return true;
+  }
+
+  requestLoan(val) {
+    if (this._approveLoan(val)) {
+      this.deposit(val);
+      console.log("Loan Approved");
+    }
+  }
+}
+
+const accountTwo = new AccountEncaps("Mark", "INR", 2222); // Result - Thanks for opening an account, Mark
+console.log(accountTwo); // Result - AccountEncaps {owner: 'Mark', currency: 'INR', _pin: 2222, _movements: Array(0), locale: 'en-US'}
+accountTwo.deposit(300);
+accountTwo.withdraw(150);
+accountTwo.requestLoan(100);
+console.log(accountTwo); // Result - AccountEncaps {owner: 'Mark', currency: 'INR', _pin: 2222, _movements: Array(3), locale: 'en-US'}
+console.log(accountTwo.getMovements()); // Result - (3) [300, -150, 100]
+console.log(accountTwo.pin); // Result - undefined
+console.log(accountTwo._pin); // Result - 2222
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
