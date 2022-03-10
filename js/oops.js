@@ -707,3 +707,64 @@ console.log(accountTwo.pin); // Result - undefined
 console.log(accountTwo._pin); // Result - 2222
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Encapsulation: Private Class, Fields, and Methods
+// 1. Public Fields
+// 2. Private Fields
+// 3. Public Methods
+// 4. Private Methods
+// 5. There is also static version
+
+class AccountEncapsPub {
+  // Public Field
+  locale = navigator.language;
+
+  // Private Fields
+  #movements = []; // Here #movements makes movements array private
+  #pin; // Here #pin makes the pin field private
+
+  constructor(owner, currency, pin) {
+    this.owner = owner;
+    this.currency = currency;
+    this.#pin = pin;
+
+    console.log(`Thanks for opening an account, ${this.owner}`);
+  }
+
+  // Public Methods - Public Interfaces
+
+  getMovements() {
+    return this.#movements;
+  }
+
+  deposit(val) {
+    this.#movements.push(val);
+  }
+
+  withdraw(val) {
+    this.deposit(-val);
+  }
+
+  _approveLoan(val) {
+    return true;
+  }
+
+  requestLoan(val) {
+    if (this._approveLoan(val)) {
+      this.deposit(val);
+      console.log("Loan Approved");
+    }
+  }
+}
+
+const accountThree = new AccountEncapsPub("Nick", "USD", 3333); // Result - Thanks for opening an account, Nick
+console.log(accountThree); // Result - AccountEncapsPub {locale: 'en-US', owner: 'Nick', currency: 'USD', #movements: Array(0), #pin: 3333}
+accountThree.deposit(500);
+accountThree.withdraw(100);
+accountThree.requestLoan(50);
+console.log(accountThree.locale); // Result - en-US
+console.log(accountThree.owner); // Result - Nick
+console.log(accountThree.currency); // Result - USD
+console.log(accountThree.getMovements()); // Result - (3) [500, -100, 50]
+// console.log(accountThree.#movements); // Result - Uncaught SyntaxError: Private field '#movements' must be declared in an enclosing class
+// console.log(accountThree.#pin); // Result - Uncaught SyntaxError: Private field '#pin' must be declared in an enclosing class
