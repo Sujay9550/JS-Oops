@@ -768,3 +768,157 @@ console.log(accountThree.currency); // Result - USD
 console.log(accountThree.getMovements()); // Result - (3) [500, -100, 50]
 // console.log(accountThree.#movements); // Result - Uncaught SyntaxError: Private field '#movements' must be declared in an enclosing class
 // console.log(accountThree.#pin); // Result - Uncaught SyntaxError: Private field '#pin' must be declared in an enclosing class
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Example - 1
+
+class CarClassEncaps {
+  constructor(make, speed) {
+    this.make = make;
+    this.speed = speed;
+  }
+
+  accelerate() {
+    this.speed += 10;
+    console.log(`${this.make} is going at a speed of ${this.speed} kmph`);
+  }
+
+  brake() {
+    this.speed -= 5;
+    console.log(`${this.make} is going at a speed of ${this.speed} kmph`);
+  }
+}
+
+console.log(CarClassEncaps.prototype); // Result - {constructor: ƒ, accelerate: ƒ, brake: ƒ}
+
+class CarClassEncapsNew extends CarClassEncaps {
+  // Private Field
+  #charge;
+
+  constructor(make, speed, charge) {
+    super(make, speed);
+    this.#charge = charge;
+  }
+
+  // Public Methods - Public Interface
+  chargeBattery(ChargeTo) {
+    this.#charge = ChargeTo;
+  }
+
+  getBatteryCharge() {
+    return this.#charge;
+  }
+
+  accelerate() {
+    this.speed += 20;
+    this.#charge--;
+    console.log(
+      `${this.make} is going at a speed of ${this.speed} kmph at an charge of ${
+        this.#charge
+      }`
+    );
+  }
+}
+
+console.log(CarClassEncapsNew.prototype); // Result - CarClassEncaps {constructor: ƒ, chargeBattery: ƒ, getBatteryCharge: ƒ, accelerate: ƒ}
+
+const nexon = new CarClassEncapsNew("Nexon", 120, 50);
+console.log(nexon); // Result - CarClassEncapsNew {make: 'Nexon', speed: 120, #charge: 50}
+console.log(nexon.__proto__); // Result - CarClassEncaps {constructor: ƒ, chargeBattery: ƒ, getBatteryCharge: ƒ, accelerate: ƒ}
+console.log(nexon.make); // Result - Nexon
+console.log(nexon.speed); // Result - 120
+// console.log(nexon.#charge); // Result - Uncaught SyntaxError: Private field '#charge' must be declared in an enclosing class
+console.log(nexon.getBatteryCharge()); // Result - 50
+nexon.accelerate(); // Result - Nexon is going at a speed of 140 kmph at an charge of 49
+console.log(nexon.speed); // Result - 140
+console.log(nexon.getBatteryCharge()); // Result - 49
+nexon.accelerate(); // Result - Nexon is going at a speed of 160 kmph at an charge of 48
+console.log(nexon.speed); // Result - 160
+console.log(nexon.getBatteryCharge()); // Result - 48
+nexon.chargeBattery(10);
+console.log(nexon.getBatteryCharge()); // Result - 10
+nexon.accelerate(); // Result - Nexon is going at a speed of 180 kmph at an charge of 9
+nexon.brake(); // Result - Nexon is going at a speed of 175 kmph
+console.log(nexon.speed); // Result - 175
+console.log(nexon.getBatteryCharge()); // Result - 9
+
+// Example - 2
+
+class CarClassEncapsOne {
+  constructor(make, speed) {
+    this.make = make;
+    this.speed = speed;
+  }
+
+  accelerate() {
+    this.speed += 10;
+    console.log(`${this.make} is going at a speed of ${this.speed}`);
+  }
+
+  brake() {
+    this.speed -= 5;
+    console.log(`${this.make} is going at a speed of ${this.speed}`);
+    return this; // Here this will allow us for chaining methods
+  }
+}
+
+console.log(CarClassEncapsOne.prototype); // Result - {constructor: ƒ, accelerate: ƒ, brake: ƒ}
+
+class CarClassEncapsNewOne extends CarClassEncapsOne {
+  // Private Field
+  #charge;
+
+  constructor(make, speed, charge) {
+    super(make, speed);
+    this.#charge = charge;
+  }
+
+  // Public Methods - Public Interface
+  chargeBattery(ChargeTo) {
+    this.#charge = ChargeTo;
+    return this; // Here this will allow us for chaining methods
+  }
+
+  getBatteryCharge() {
+    return this.#charge;
+  }
+
+  accelerate() {
+    this.speed += 20;
+    this.#charge--;
+    console.log(
+      `${this.make} is going at a speed of ${this.speed} with a charge of ${
+        this.#charge
+      }`
+    );
+    return this; // Here this will allow us for chaining methods
+  }
+}
+
+console.log(CarClassEncapsNewOne.prototype); // Result - CarClassEncapsOne {constructor: ƒ, chargeBattery: ƒ, getBatteryCharge: ƒ, accelerate: ƒ}
+
+const altroz = new CarClassEncapsNewOne("Altroz", 120, 50);
+console.log(altroz); // Result - CarClassEncapsNewOne {make: 'Altroz', speed: 120, #charge: 50}
+console.log(altroz.__proto__); // Result - CarClassEncapsOne {constructor: ƒ, chargeBattery: ƒ, getBatteryCharge: ƒ, accelerate: ƒ}
+console.log(altroz.make); // Result - Altroz
+console.log(altroz.speed); // Result - 120
+console.log(altroz.charge); // Result - Undefined
+// console.log(altroz.#charge); // Result - Uncaught SyntaxError: Private field '#charge' must be declared in an enclosing class
+console.log(altroz.getBatteryCharge()); // Result - 50
+altroz.accelerate(); // Result - Altroz is going at a speed of 140 with a charge of 49
+console.log(altroz.speed); // Result - 140
+console.log(altroz.getBatteryCharge()); // Result - 49
+altroz.accelerate(); // Result - Altroz is going at a speed of 160 with a charge of 48
+console.log(altroz.speed); // Result - 160
+console.log(altroz.getBatteryCharge()); // Result - 48
+altroz.chargeBattery(30);
+console.log(altroz.getBatteryCharge()); // Result - 30
+altroz.accelerate(); // Result - Altroz is going at a speed of 180 with a charge of 29
+console.log(altroz.speed); // Result - 180
+console.log(altroz.getBatteryCharge()); // Result - 29
+altroz.brake(); // Result - Altroz is going at a speed of 175
+console.log(altroz.speed); // Result - 175
+console.log(altroz.getBatteryCharge()); // Result - 29
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
